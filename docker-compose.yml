@@ -1,0 +1,47 @@
+services:
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: n8n
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_BASIC_AUTH_ACTIVE=${N8N_BASIC_AUTH_ACTIVE}
+      - N8N_BASIC_AUTH_USER=${N8N_BASIC_AUTH_USER}
+      - N8N_BASIC_AUTH_PASSWORD=${N8N_BASIC_AUTH_PASSWORD}
+      - TZ=${TZ}
+    volumes:
+      - ${N8N_DATA}:/home/node/.n8n
+      - ${LANDING}:/data/landing
+      - ${WAREHOUSE}:/data/warehouse
+      - ./:/workspace             
+    working_dir: /workspace
+    restart: unless-stopped
+
+  python:
+    image: python:3.11-slim
+    container_name: py-runner
+    volumes:
+      - ./:/workspace
+      - ${LANDING}:/data/landing
+      - ${WAREHOUSE}:/data/warehouse
+    working_dir: /workspace
+    command: >
+      sh -c "pip install --no-cache-dir -r /workspace/requirements.txt &&
+             python /workspace/scripts/app.py"
+    ports:
+      - "5000:5000"
+    restart: unless-stopped
+    env_file:
+      - .env
+
+  sftp:
+    image: atmoz/sftp:latest  
+    container_name: sftp
+    ports:
+      - "2222:22"              
+    volumes:
+      - ./sftp/upload:/home/data/upload   
+    command: |
+      data:TestMe123:1001:1001:/home/data/
+    restart: unless-stopped
+

@@ -1,0 +1,123 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1552,
+        -784
+      ],
+      "id": "e846712d-bb30-4ee8-8ff4-588a5767956a",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "protocol": "sftp",
+        "path": "/upload/ads_spend.csv",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.ftp",
+      "typeVersion": 1,
+      "position": [
+        -1312,
+        -784
+      ],
+      "id": "dccc773c-f34c-47ae-ae3e-d7546f6bef34",
+      "name": "FTP",
+      "credentials": {
+        "sftp": {
+          "id": "jjAoF2sU4RSNgsYn",
+          "name": "FTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "={{('/data/landing/ads_spend_' + $now.toFormat('yyyyLLdd_HHmmss') + '.csv').replace(/\\\\n|\\\\r|\\\\t/g,'').replace(/[\\r\\n\\t]/g,'').replace(/[^\\x20-\\x7E]/g,'').replace(/[\\\\<>:\"|?*]/g,'').replace(/\\.CSV$/i,'.csv').trim()}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        -1056,
+        -784
+      ],
+      "id": "8b4a7220-2c71-4c45-9322-f558e3376e5f",
+      "name": "Read/Write Files from Disk"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://py-runner:5000/load",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "=secret-key"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -800,
+        -784
+      ],
+      "id": "2a62ebee-307c-4a67-9307-87a3076419be",
+      "name": "HTTP Request"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "FTP",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FTP": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "3b48410e-78e6-4669-8e85-8b99f51cf308",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "3c4fd72a6aae0537b032bae9ac942d1c44968b99c25484b59cfa6c11a052b0eb"
+  },
+  "id": "mlT1OZQ26i6AXXuA",
+  "tags": []
+}

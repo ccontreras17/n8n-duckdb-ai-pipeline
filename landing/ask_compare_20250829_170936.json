@@ -1,0 +1,46 @@
+{
+    "answer": "Over the last 30 days, the Customer Acquisition Cost (CAC) decreased by 7.63%, indicating improved efficiency in acquiring customers. Meanwhile, the Return on Advertising Spend (ROAS) increased by 8.26%, reflecting a higher revenue return per dollar spent on advertising.",
+    "data": [
+        {
+            "current_value": 285036.14999999997,
+            "metric": "spend",
+            "pct_change": 0.05248264676227584,
+            "previous_value": 270822.66000000003
+        },
+        {
+            "current_value": 9562.0,
+            "metric": "conversions",
+            "pct_change": 0.1394184938036225,
+            "previous_value": 8392.0
+        },
+        {
+            "current_value": 956200.0,
+            "metric": "revenue",
+            "pct_change": 0.1394184938036225,
+            "previous_value": 839200.0
+        },
+        {
+            "current_value": 29.80926061493411,
+            "metric": "CAC",
+            "pct_change": -0.07629843425758007,
+            "previous_value": 32.27152764537655
+        },
+        {
+            "current_value": 3.3546622068814784,
+            "metric": "ROAS",
+            "pct_change": 0.08260074150275547,
+            "previous_value": 3.0987067330333433
+        }
+    ],
+    "meta": {
+        "anchor_date": "2025-06-30",
+        "matched_intent": true,
+        "mode": "compare",
+        "openai_model": "gpt-4o",
+        "temperature": 0.5
+    },
+    "prompt_preview": {
+        "system": "You are a friendly but precise marketing analyst. Explain KPI changes factually using the table provided. Call out notable increases/decreases in CAC and ROAS, and mention any caveats.",
+        "user": "Question: Compare CAC and ROAS for last 30 days vs prior 30 days.\n\nAnchor date (end of last-30 window): 2025-06-30\nMetrics table (last 30 vs prior 30):\n| metric | current_value | previous_value | pct_change |\n| --- | --- | --- | --- |\n| spend | 285,036.15 | 270,822.66 | +5.25% |\n| conversions | 9,562.00 | 8,392.00 | +13.94% |\n| revenue | 956,200.00 | 839,200.00 | +13.94% |\n| CAC | 29.81 | 32.27 | -7.63% |\n| ROAS | 3.35 | 3.10 | +8.26% |\n\nSummarize CAC and ROAS changes in 1\u20132 short sentences."
+    }
+}
